@@ -2,7 +2,8 @@ import React from 'react';
 import './signin-styles.scss';
 import FormInput from '../form-input/form-input.component';
 import CustomButton from '../custom-button/custom-button.component';
-import { signInWIthGoogle } from '../../firebase/firebase.utility';
+// import { signInWithFacebook } from '../../firebase/firebase.utility';
+import {auth, signInWithGoogle } from '../../firebase/firebase.utility';
 class Signin extends React.Component {
     constructor() {
         super();
@@ -12,9 +13,18 @@ class Signin extends React.Component {
         }
     }
     // handling the submit and initialize email and password
-    handleSubmit = (event) => {
+    handleSubmit = async (event) => {
         event.preventDefault();
-        this.setState({email:'',password:''});
+        const {email,password} = this.state;
+        try {
+            await auth.signInWithEmailAndPassword(email,password);
+            
+            this.setState({email:'',password:''});
+            
+        }catch(error) {
+            console.error(error);
+        }
+        
     } 
     // set the value of email and password
     handleChange = (event) => {
@@ -42,7 +52,7 @@ class Signin extends React.Component {
                 required/>
                 <div className="buttons">
                     <CustomButton type="submit">SUBMIT FORM</CustomButton>
-                    <CustomButton onClick={signInWIthGoogle} isGoogleSignIn>SIGN IN WITH GOOGLE</CustomButton>
+                    <CustomButton onClick={signInWithGoogle} isGoogleSignIn> GOOGLE</CustomButton> 
                 </div>
              </form>
             </div>
@@ -61,5 +71,8 @@ export default Signin;
     messagingSenderId: "824539907964",
     appId: "1:824539907964:web:75f8c4184e2e1e2f9b86f9",
     measurementId: "G-2Q3XLZ621C"
+    <CustomButton onClick={signInWithFacebook} isFacebookSignIn>FACEBOOK</CustomButton>
+
+     <CustomButton onClick={signInWithGoogle} isGoogleSignIn> GOOGLE</CustomButton>
   }
   */

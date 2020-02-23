@@ -15,4 +15,3 @@ const FormInput = ({handleChange,label,...otherProps}) => (
 )
 
 export default FormInput;
-// ={`${(lebel.value.length) ? 'shrink': ''} form-input-label`}
