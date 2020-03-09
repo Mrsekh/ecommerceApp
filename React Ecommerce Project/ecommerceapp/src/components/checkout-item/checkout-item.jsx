@@ -17,7 +17,7 @@ const CheckoutItem = ({cartItem,clearItem,addQuantity,removeQuantity}) =>  {
         </span>
         <span className='price'>{price}</span>
         <div className='remove-button' onClick={() => clearItem(cartItem)} >&#10005;</div>
-    </div>    
+    </div>  
 )}
 
 const mapDispatchToProps = (dispatch) => ({
