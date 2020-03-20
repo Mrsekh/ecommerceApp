@@ -4,12 +4,14 @@ import {connect} from 'react-redux';
 import {toggleCartHidden} from '../../redux/cart/cart.action';
 import {selectCartItemsCount} from '../../redux/cart/cart.selectors';
 import {createStructuredSelector} from 'reselect';
-import './cartIcon.styles.scss';
+import {CartIconStyles,ItemCount,ShoppingCartStyles} from './cartIcon.styles';
 const CartIcon = ({toggleCartHidden,itemCount}) => (
-    <div className='cart-icon' onClick={toggleCartHidden}>
-        <ShoppingIcon className='shopping-icon'/>
-        <span className='item-count' >{itemCount}</span>
-    </div>
+    <CartIconStyles onClick={toggleCartHidden}>
+        <ShoppingCartStyles>
+            <ShoppingIcon/>
+        </ShoppingCartStyles>
+        <ItemCount>{itemCount}</ItemCount>
+    </CartIconStyles>
 )
 
 const mapDispatchToProps = (dispatch) => ({

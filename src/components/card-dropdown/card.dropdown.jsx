@@ -5,23 +5,23 @@ import {selectCartItems} from '../../redux/cart/cart.selectors';
 import {createStructuredSelector} from 'reselect';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom';
-import './card.dropdown.scss';
+import {CartDropDown,EmptyMessage,CartItemStyles} from './carddropdown.styles';
 import { toggleCartHidden } from '../../redux/cart/cart.action';
 const CardDropDown = ({collectionItem,history,dispatch}) =>  (
-    <div className='cart-dropdown'>
-        <div className='cart-items'>
+    <CartDropDown>
+        <CartItemStyles>
             {   
                 collectionItem.length ? 
                 collectionItem.map(item => <CartItem key={item.id} item={item}/>)
-                : (<span className="empty-message">Your cart is empty</span>)
+                : (<EmptyMessage>Your cart is empty</EmptyMessage>)
             }
             <CustomButton onClick={() => {
                 history.push('/checkout');
                 dispatch(toggleCartHidden())
               }
             }>GO TOCHECKOUT</CustomButton>
-        </div>
-    </div>
+        </CartItemStyles>
+    </CartDropDown>
 )
 const mapStateToProps = createStructuredSelector({
     collectionItem:selectCartItems

@@ -9,25 +9,33 @@ import Header from './components/header/header-component';
 import './App.css';
 import {createStructuredSelector} from 'reselect';
 import {selectCurrentUser} from './redux/user/user.selector';
-import {auth ,createUserProfileDocument} from './firebase/firebase.utility';
+import {auth ,createUserProfileDocument } from './firebase/firebase.utility';
 import {setCurrentUser} from './redux/user/user.actions';
-
+// import {collectionItemSelectorForPreview} from './redux/shop/shop.selector';
 class App extends React.Component { 
+	unsubscribeFromAuth = null;
 	componentDidMount () {
 		const {setCurrentUser} = this.props;
 		auth.onAuthStateChanged(async userAuth => {
 			if(userAuth) {
-	            const userRef = await createUserProfileDocument(userAuth);
+				const userRef = await createUserProfileDocument(userAuth);
 				userRef.onSnapshot(snapShot => {
 					setCurrentUser({
 							id:snapShot.id,
 							...snapShot.data()
 					})	
 				});
+			
 			}else{
 				setCurrentUser(userAuth);
 			}
+			// This method is used for storing the data in the database programatically
+			//createCollectionAndDocument('collection',collectionItem.map(({title,items}) => ({title,items})));
 		});
+	}
+
+	componentWillUnmount() {
+		this.unsubscribeFromAuth();
 	}
 	
 	render() {
@@ -50,6 +58,7 @@ class App extends React.Component {
 
 const mapStateToProps = createStructuredSelector({
 	currentUser: selectCurrentUser
+	//collectionItem:collectionItemSelectorForPreview
 })	
 	
 const mapDispatchToProps  = (dispatch) => ({

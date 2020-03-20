@@ -8,7 +8,6 @@ const config = {
     projectId: "ecommerceapp-6b082",
     storageBucket: "ecommerceapp-6b082.appspot.com",
     messagingSenderId: "824539907964",
-    appId: "1:824539907964:web:75f8c4184e2e1e2f9b86f9",
     measurementId: "G-2Q3XLZ621C"
   };
   firebase.initializeApp(config);
@@ -34,8 +33,43 @@ const config = {
     //console.log(userRef);
     return userRef;
 }
-    
-  
+  //put data in firebase   
+  export const createCollectionAndDocument = async (collectionKey,collectionArray) => {
+    //console.log(collectionArray);
+     const collectionRef = firestore.collection(collectionKey);
+     //console.log(collectionArray);
+      const batch = firestore.batch();
+
+      collectionArray.forEach(itemType => {
+        const newDocRef =  collectionRef.doc();
+        console.log(newDocRef); 
+        batch.set(newDocRef,itemType);
+      })
+      
+     return await batch.commit();
+
+  }
+
+//Logic
+  //transform the data to add routes and use the data as per our requirement
+
+ export const convertCollectionSnapshotToMap = (collection) => {
+     const transformedCollections = collection.docs.map(doc => {
+        const {title,items} = doc.data();
+        return {
+          routeUrl: encodeURI(title.toLowerCase()),
+          id: doc.id,
+          title,
+          items 
+        }
+
+     });
+    return transformedCollections.reduce((accumulator,collection) => {
+        accumulator[collection.title.toLowerCase()] = collection;
+        return accumulator;
+     },{});  
+  } 
+
 
   export const auth = firebase.auth();
   export const firestore = firebase.firestore();
